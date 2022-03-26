@@ -10,6 +10,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeScreen, ProjectScreen} from './app/pages';
 import FarmersScreen from './app/pages/FarmersScreen';
 import AuthStack from './app/pages/stacks/AuthStack';
+import BottomNav from './app/navigation/bottomNav';
 
 const {RealmProvider} = PrivateData;
 const {RealmProvider: Public} = PublicData;
@@ -51,7 +52,8 @@ const ARealmWrapper = () => {
       {user ? (
         <RealmProvider sync={{user, partitionValue: user.id}}>
           <Public sync={{user, partitionValue: 'PUBLIC'}}>
-            <AppStack />
+            {/* <AppStack /> */}
+            <BottomNav />
           </Public>
         </RealmProvider>
       ) : (

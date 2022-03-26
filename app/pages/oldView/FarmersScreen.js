@@ -31,26 +31,17 @@ const FarmersScreen = () => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.secondary,
     },
   });
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          padding: 40,
-          backgroundColor: theme.colors.primary,
-          borderRadius: 20,
-        }}>
-        <Text>FarmersScreen : {farmers.length}</Text>
+      <Text>FarmersScreen : {farmers.length}</Text>
 
-        <Pressable onPress={addPublicData} style={{marginTop: 20}}>
-          <Text style={{fontSize: 28, color: theme.colors.text3}}>
-            Add Data
-          </Text>
-        </Pressable>
-      </View>
+      <Pressable onPress={addPublicData} style={{marginTop: 20}}>
+        <Text>Add Data</Text>
+      </Pressable>
     </View>
   );
 };

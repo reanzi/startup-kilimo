@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import {View, StyleSheet, Alert, Text} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ProjectList from '../components/ProjectList';
 import AddProjectForm from '../components/AddProjectForm';
@@ -61,7 +61,8 @@ export default function ProjectScreen({navigation}) {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.content}>
-        <Text>Project View</Text>
+        <AddProjectForm onSubmit={handleAddProject} />
+        <ProjectList projects={projects} onDelete={handleDeleteProject} />
       </View>
     </SafeAreaView>
   );
@@ -70,12 +71,11 @@ export default function ProjectScreen({navigation}) {
 export const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.white,
-    paddingHorizontal: 20,
+    backgroundColor: colors.darkBlue,
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // paddingTop: 20,
+    paddingHorizontal: 20,
   },
 });

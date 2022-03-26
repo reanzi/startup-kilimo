@@ -18,9 +18,6 @@ import {PrivateData} from '../context/RealmConfig';
 import {useAuth} from '../context/Authentication';
 
 import {useTheme} from '@react-navigation/native';
-import Greeting from '../components/Greeting';
-import Content from '../components/DataView/Content';
-import Navigator from '../components/DataView/Navigator';
 
 const {useQuery, useRealm} = PrivateData;
 
@@ -119,22 +116,65 @@ export default function HomeScreen({navigation}) {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
-      backgroundColor: colors.white,
-      paddingLeft: 60,
-      marginRight: -20,
+      backgroundColor: colors.darkBlue,
     },
     content: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      paddingHorizontal: 20,
     },
   });
   return (
     <SafeAreaView style={styles.screen}>
-      <View style={{height: 50}} />
-      <Greeting name="Ray" />
-      <View style={{height: 20}} />
-      <Content />
+      <View style={styles.content}>
+        <View
+          style={{
+            margin: 12,
+            marginBottom: 22,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Pressable
+            style={{
+              backgroundColor: colors.secondary,
+              justifyContent: 'center',
+              paddingHorizontal: 10,
+              height: 45,
+              alignItems: 'center',
+              marginLeft: 20,
+              borderRadius: 5,
+            }}
+            title="See All Projects"
+            onPress={() => navigation.navigate('Projects')}>
+            <Text style={{fontSize: 17, fontWeight: 'bold', color: 'white'}}>
+              See All Projects
+            </Text>
+          </Pressable>
+          <Pressable
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 10,
+              justifyContent: 'center',
+              height: 45,
+              alignItems: 'center',
+              marginLeft: 20,
+              borderRadius: 5,
+            }}
+            title="Farmers"
+            onPress={() => navigation.navigate('Farmers')}>
+            <Text>Farmers</Text>
+          </Pressable>
+        </View>
+        <AddTaskForm onSubmit={handleAddTask} />
+        {tasks.length === 0 ? (
+          <IntroText />
+        ) : (
+          <TaskList
+            tasks={tasks}
+            onToggleTaskStatus={handleToggleTaskStatus}
+            onDeleteTask={handleDeleteTask}
+          />
+        )}
+      </View>
     </SafeAreaView>
   );
 }
