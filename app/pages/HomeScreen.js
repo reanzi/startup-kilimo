@@ -119,21 +119,18 @@ export default function HomeScreen({navigation}) {
   const styles = StyleSheet.create({
     screen: {
       flex: 1,
+      // justifyContent: 'flex-start',
       backgroundColor: colors.white,
       paddingLeft: 60,
       marginRight: -20,
-    },
-    content: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
     },
   });
   return (
     <SafeAreaView style={styles.screen}>
       <View style={{height: 50}} />
-      <Greeting name="Ray" />
+      <Greeting name="Mica" />
       <View style={{height: 20}} />
+      {/* <Navigator /> */}
       <Content />
     </SafeAreaView>
   );
