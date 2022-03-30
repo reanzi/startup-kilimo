@@ -1,0 +1,8 @@
+Top level doc will be:
+    Report
+    Photo:
+    MenuData
+
+
+    the main data is Report, others will be embedded, so every embedded data will have a generator whichi will return the object
+    ready to be embedded into report;
