@@ -1,0 +1,14 @@
+home: itakuwa na statistics za wakulima, wakulima waliotembelewa hivi karibuni, 
+walioongezwa hivi karibuni, wastani wa wanaotembelewa kwa siku, maendeleo kuelekea malengo
+
+On Initial load, Farmers will be sorted by 'Recently visited or added' else a user can change
+how to list the resources
+
+kutakuwa na : 
+1:) Search => kuelekea kwenye searching page, onClick itaelekea kwenye details
+2:) Create => kuelekea kwenye Create new farmer page, onSave return to home
+
+Details =>  Details zaa farmer husika, kuwe na uwezo ku-edit taarifa kwa kutumia 
+Update page (inalingana na Create page)
+
+Details page inaweza kuitwa kutokea kwenye home na search page
