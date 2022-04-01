@@ -5,6 +5,8 @@ import {HomeScreen, ProjectScreen, FarmersScreen} from '../pages';
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from '@react-navigation/native';
 import Tab from '../components/Tab';
+import Profile from '../pages/ProfileScreen';
+import FarmerStack from './Stacks/FarmerStack';
 
 const TabNav = createBottomTabNavigator();
 
@@ -31,17 +33,15 @@ const BottomNav = () => {
         }}
       />
       <TabNav.Screen
-        name="Reports"
-        component={FarmersScreen}
+        name="Resources"
+        component={FarmerStack}
         options={{
-          tabBarButton: props => (
-            <Tab icon="layers" label="Reports" {...props} />
-          ),
+          tabBarButton: props => <Tab icon="layers" label="Data" {...props} />,
         }}
       />
       <TabNav.Screen
-        name="Farmers"
-        component={FarmersScreen}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarButton: props => <Tab icon="user" label="ACCOUNT" {...props} />,
         }}

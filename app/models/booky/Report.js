@@ -31,13 +31,18 @@ export class Report {
       _partition: 'string',
       createdAt: 'date',
       // activity: 'Activity',
+      // cropHealth: 'CropHealth',
+      // notes: 'Notes[]',
       farmer: 'Farmer',
       farm: 'Farm',
       crops: 'Crops[]',
-      // cropHealth: 'CropHealth',
       afo: 'AFO',
-      // notes: 'Notes[]',
       draft: 'boolean',
+      farmer: {
+        type: 'linkingObjects',
+        objectType: 'Farmer',
+        property: 'visits',
+      },
     },
   };
 }

@@ -11,6 +11,7 @@ import {HomeScreen, ProjectScreen} from './app/pages';
 import FarmersScreen from './app/pages/FarmersScreen';
 import AuthStack from './app/pages/stacks/AuthStack';
 import BottomNav from './app/navigation/bottomNav';
+import {LightSpeedInLeft} from 'react-native-reanimated';
 
 const {RealmProvider} = PrivateData;
 const {RealmProvider: Public} = PublicData;
@@ -48,7 +49,7 @@ const ARealmWrapper = () => {
     );
   }
   return (
-    <NavigationContainer theme={darkTheme}>
+    <NavigationContainer theme={lightTheme}>
       {user ? (
         <RealmProvider sync={{user, partitionValue: user.id}}>
           <Public sync={{user, partitionValue: 'PUBLIC'}}>

@@ -1,10 +1,13 @@
 import React, {useCallback, useMemo} from 'react';
 import {
   SafeAreaView,
+  SectionList,
   View,
   StyleSheet,
+  ScrollView,
   Button,
   Pressable,
+  FlatList,
   Text,
   Alert,
 } from 'react-native';
@@ -21,10 +24,27 @@ import {useTheme} from '@react-navigation/native';
 import Greeting from '../components/Greeting';
 import Content from '../components/DataView/Content';
 import Navigator from '../components/DataView/Navigator';
+import Tabed from './Tabed';
+import Divider from '../components/Divider';
 
+import {tabs} from '../Data/data';
+import Card from '../components/Card';
+import SectionHeader from './SectionHeader';
+
+const DATA = [
+  {
+    title: 'This Week',
+    data: ['Pizza', 'Burger', 'Risotto'],
+  },
+  {
+    title: 'Sides',
+    data: ['French', 'Fries', 'Onion Rings', 'Shrimps'],
+  },
+];
 const {useQuery, useRealm} = PrivateData;
 
 export default function HomeScreen({navigation}) {
+  console.log(tabs);
   const realm = useRealm();
   const result = useQuery('Task');
   const resultProject = useQuery('Project');
@@ -125,13 +145,75 @@ export default function HomeScreen({navigation}) {
       marginRight: -20,
     },
   });
+  const Upcoming = ({task}) => {
+    return (
+      <View
+        style={{
+          width: 170,
+          backgroundColor: '#fff',
+          margin: 10,
+          marginTop: 0,
+          padding: 10,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: '#c3c4c4',
+          paddingBottom: 30,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 3,
+            paddingVertical: 10,
+          }}>
+          <Text style={{color: '#b6b6b6'}}>Tomorrow</Text>
+          <Text>sanzale</Text>
+        </View>
+        <Text style={{padding: 5, color: '#333', fontSize: 16}}>{task}</Text>
+      </View>
+    );
+  };
   return (
-    <SafeAreaView style={styles.screen}>
+    <ScrollView style={styles.screen} horizontal={false}>
       <View style={{height: 50}} />
       <Greeting name="Mica" />
       <View style={{height: 20}} />
-      {/* <Navigator /> */}
-      <Content />
-    </SafeAreaView>
+      <Tabed />
+      <Divider margin={60} />
+      <ScrollView horizontal={true}>
+        <View>
+          {DATA.map((item, i) => {
+            return (
+              <View
+                style={{width: 380}}
+                key={({title}) => {
+                  const id = `${Math.random()}`;
+                  console.log('key: ', id);
+                  return id;
+                }}>
+                <SectionHeader title={item.title} />
+                <FlatList
+                  data={item.data}
+                  numColumns={2}
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item, index) => {
+                    const id = `${item}-${index}-${Math.random() * 10000}`;
+                    return id;
+                  }}
+                  nestedScrollEnabled={true}
+                  contentContainerStyle={{
+                    backgroundColor: 'transparent',
+                  }}
+                  renderItem={({item}) => {
+                    return <Upcoming task={item} />;
+                  }}
+                />
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </ScrollView>
   );
 }
