@@ -27,7 +27,7 @@ import Navigator from '../components/DataView/Navigator';
 import Tabed from './Tabed';
 import Divider from '../components/Divider';
 
-import {tabs} from '../Data/data';
+// import {tabs} from '../Data/data';
 import Card from '../components/Card';
 import SectionHeader from './SectionHeader';
 
@@ -44,7 +44,6 @@ const DATA = [
 const {useQuery, useRealm} = PrivateData;
 
 export default function HomeScreen({navigation}) {
-  console.log(tabs);
   const realm = useRealm();
   const result = useQuery('Task');
   const resultProject = useQuery('Project');
@@ -188,7 +187,7 @@ export default function HomeScreen({navigation}) {
               <View
                 style={{width: 380}}
                 key={({title}) => {
-                  const id = `${Math.random()}`;
+                  const id = `${Math.random()}-${title}`;
                   console.log('key: ', id);
                   return id;
                 }}>
@@ -199,6 +198,7 @@ export default function HomeScreen({navigation}) {
                   showsHorizontalScrollIndicator={false}
                   keyExtractor={(item, index) => {
                     const id = `${item}-${index}-${Math.random() * 10000}`;
+                    // console.log(id);
                     return id;
                   }}
                   nestedScrollEnabled={true}

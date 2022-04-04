@@ -80,9 +80,9 @@ const Tabed = () => {
     );
   };
 
-  const ScrollNav = () => (
+  const ScrollNav = data => (
     <FlatList
-      data={tabs}
+      data={data}
       horizontal
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item, index) => `${item}-${index}`}
@@ -98,7 +98,7 @@ const Tabed = () => {
   );
   return (
     <>
-      <View style={{paddingBottom: 10}}>{ScrollNav()}</View>
+      <View style={{paddingBottom: 10}}>{ScrollNav(tabs)}</View>
       <ScrollView
         horizontal={true}
         style={{height: 300}}

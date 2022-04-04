@@ -66,7 +66,7 @@ const Home = () => {
           <TextInput
             style={styles.search_input}
             placeholder="Search..."
-            autoFocus={true}
+            // autoFocus={true}
             placeholderTextColor="#d4d4d4"
             // showSoftInputOnFocus={false}
           />

@@ -7,6 +7,7 @@ import {useTheme} from '@react-navigation/native';
 import Tab from '../components/Tab';
 import Profile from '../pages/ProfileScreen';
 import FarmerStack from './Stacks/FarmerStack';
+import DataPages from '../pages/DataPages';
 
 const TabNav = createBottomTabNavigator();
 
@@ -30,6 +31,13 @@ const BottomNav = () => {
           tabBarButton: props => (
             <Tab icon="file-text" label="Note" {...props} />
           ),
+        }}
+      />
+      <TabNav.Screen
+        name="Add"
+        component={DataPages.Create}
+        options={{
+          tabBarButton: props => <Tab icon="plus" label="Data" {...props} />,
         }}
       />
       <TabNav.Screen
