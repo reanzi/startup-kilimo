@@ -1,4 +1,5 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Button, Text, View} from 'react-native';
+import Modal from 'react-native-modal';
 import React from 'react';
 import Tabed from '../Tabed';
 import ScrollNav from '../../components/ScrollNav';
@@ -9,9 +10,15 @@ const menus = ['Activity', 'Farmer', 'Farm', 'Crop', 'Crop Health'];
 const Create = () => {
   const [selectedTab, setSelectedTab] = React.useState(menus[0]);
   console.log('Active: ', selectedTab);
+  const [isModalVisible, setModalVisible] = React.useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   return (
     <View style={styles.container}>
+      <Button title="Show modal" onPress={toggleModal} />
       <View>
         <ScrollNav data={menus} active={selectedTab} onPress={setSelectedTab} />
       </View>
@@ -21,6 +28,14 @@ const Create = () => {
       <View style={styles.save_button}>
         <Text style={styles.save_text}>Save</Text>
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={{flex: 1}}>
+          <Text>Hello!</Text>
+
+          <Button title="Hide modal" onPress={toggleModal} />
+        </View>
+      </Modal>
     </View>
   );
 };
