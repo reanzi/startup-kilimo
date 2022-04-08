@@ -16,6 +16,7 @@
     "@realm/react": "^0.1.0",
     "react": "17.0.2",
     "react-native": "0.66.4",
+    "react-native-elements": "^3.4.2",
     "react-native-encrypted-storage": "^4.0.2",
     "react-native-gesture-handler": "^2.3.2",
     "react-native-get-random-values": "~1.7.0",

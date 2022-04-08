@@ -2,7 +2,9 @@ import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import localStore from './app/utils/Store';
+
+import {BottomSheet, ListItem} from 'react-native-elements';
 
 // Screens
 import {
@@ -21,6 +23,7 @@ import {
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Feather from 'react-native-vector-icons/Feather';
 import {AuthContext} from './app/context/AuthContect';
+import {Alert, Dimensions, StyleSheet, View} from 'react-native';
 
 const AuthStack = createNativeStackNavigator();
 const AuthScreen = () => (
@@ -30,37 +33,42 @@ const AuthScreen = () => (
   </AuthStack.Navigator>
 );
 
+/**
+ * BottomSheet
+ */
+
 const Tabs = createBottomTabNavigator();
-const TabScreen = () => (
-  <Tabs.Navigator screenOptions={{headerShown: false}}>
-    <Tabs.Screen
-      name="HomeStack"
-      component={HomeStackScreen}
-      options={{tabBarIcon: () => <Feather name="home" size={24} />}}
-    />
-    <Tabs.Screen
-      name="Menu"
-      component={CreateNewPlaceholder}
-      options={{
-        tabBarIcon: () => <Feather name="chevron-up" size={24} />,
-      }}
-      listeners={({navigation}) => ({
-        tabPress: event => {
-          event.preventDefault();
-          navigation.navigate('CreateNew');
-        },
-      })}
-    />
-    <Tabs.Screen
-      name="SearchStack"
-      component={SearchStackScreen}
-      options={{
-        tabBarIcon: () => <Feather name="search" size={24} />,
-      }}
-    />
-    {/* <Tabs.Screen name="Details" component={Details} options={{}} /> */}
-  </Tabs.Navigator>
-);
+const TabScreen = () => {
+  return (
+    <Tabs.Navigator screenOptions={{headerShown: false}}>
+      <Tabs.Screen
+        name="HomeStack"
+        component={HomeStackScreen}
+        options={{tabBarIcon: () => <Feather name="home" size={24} />}}
+      />
+      <Tabs.Screen
+        name="Menu"
+        component={CreateNewPlaceholder}
+        options={{
+          tabBarIcon: () => <Feather name="chevron-up" size={24} />,
+        }}
+        listeners={({navigation}) => ({
+          tabPress: event => {
+            event.preventDefault();
+            navigation.navigate('CreateNew');
+          },
+        })}
+      />
+      <Tabs.Screen
+        name="SearchStack"
+        component={SearchStackScreen}
+        options={{
+          tabBarIcon: () => <Feather name="search" size={24} />,
+        }}
+      />
+    </Tabs.Navigator>
+  );
+};
 
 const HomeStack = createNativeStackNavigator();
 const HomeStackScreen = () => (
@@ -88,6 +96,10 @@ const RootStackScreen = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
   const [error, SetError] = React.useState(null);
+
+  /**
+   * BottomSheet
+   */
 
   // Context
   const AuthFunctions = React.useMemo(() => {
@@ -128,7 +140,6 @@ const RootStackScreen = () => {
     // return () => clearTimeout(done);
   }, []);
 
-  // if (isLoading) return <Splash />;
   return (
     <AuthContext.Provider value={AuthFunctions}>
       <RootStack.Navigator
@@ -148,7 +159,7 @@ const RootStackScreen = () => {
         />
         <RootStack.Screen
           name="CreateNew"
-          component={Modal}
+          component={NewModal}
           options={{animation: 'slide_from_bottom'}}
         />
       </RootStack.Navigator>
@@ -156,33 +167,19 @@ const RootStackScreen = () => {
   );
 };
 
-const localStore = {
-  retrieve: async () => {
-    try {
-      const data = await EncryptedStorage.getItem('@token');
-      if (data !== null) return data;
-      return null;
-    } catch (error) {
-      console.log('Failed to Retrieve: ', error.message);
-    }
-  },
-  store: async (key, data) => {
-    try {
-      await EncryptedStorage.setItem(key, data);
-    } catch (error) {
-      console.log('Failed to Store: ', error.message);
-    }
-  },
-  emptyStore: async () => {
-    try {
-      await EncryptedStorage.clear();
-    } catch (error) {
-      console.log('Failed to Clear: ', error.message);
-    }
-  },
-};
-
 export default () => {
+  const deviceHeight = Dimensions.get('screen').height;
+  const styles = StyleSheet.create({
+    sheet: {
+      flex: 1,
+      width: '100%',
+      height: deviceHeight * 0.4,
+      backgroundColor: 'teal',
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+    },
+  });
   return (
     <NavigationContainer>
       <RootStackScreen />

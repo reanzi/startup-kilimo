@@ -5,9 +5,12 @@ import {
   Button,
   Alert,
   ActivityIndicator,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import React from 'react';
 import {AuthContext} from './context/AuthContect';
+import Feather from 'react-native-vector-icons/Feather';
 
 const alert = msg => Alert.alert(msg);
 const styles = StyleSheet.create({
@@ -122,6 +125,91 @@ export const Modal = ({navigation}) => (
 export const CreateNewPlaceholder = () => {
   return <View style={{flex: 1, backgroundColor: 'teal'}} />;
 };
-export const NewModal = () => {
-  return <View style={{width: '100%', backgroundColor: 'red', height: 234}} />;
+export const NewModal = ({navigation}) => {
+  const _Header = () => (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingBottom: 5,
+        paddingTop: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: '#e9e9e9',
+      }}>
+      <Text style={{fontSize: 24, fontWeight: 'normal'}}>Create</Text>
+      <Pressable onPress={() => navigation.pop()}>
+        <Feather name="x" size={24} />
+      </Pressable>
+    </View>
+  );
+
+  const handlePress = dest => {
+    console.log('Destination: ', dest);
+  };
+  const List = [
+    {title: 'Register Farmer', onPress: 'NewFarmer', icon: 'activity'},
+    {title: 'Register Farm', onPress: 'NewFarm', icon: 'map-pin'},
+    {title: 'Create Report', onPress: 'NewReport', icon: 'file'},
+    {title: 'Create Schedule', onPress: 'NewSchedule', icon: 'clock'},
+    {title: 'Create Audio', onPress: 'NewAudio', icon: 'music'},
+  ];
+  const _MenuList = () => (
+    <>
+      {List.map((item, index) => (
+        <Pressable
+          key={index}
+          style={{
+            paddingVertical: 20,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+          onPress={() => handlePress(item.onPress)}>
+          <View
+            style={{
+              marginRight: 20,
+              backgroundColor: '#f0f0f0',
+              padding: 6,
+              borderRadius: 20,
+            }}>
+            <Feather name={item.icon} size={20} />
+          </View>
+          <Text style={{fontSize: 18, fontWeight: '400', color: '#888'}}>
+            {item.title}{' '}
+          </Text>
+        </Pressable>
+      ))}
+    </>
+  );
+  return (
+    <Pressable
+      style={{flex: 1, backgroundColor: '#00000011'}}
+      onPres={() => console.log('outside')}>
+      <View
+        style={{
+          width: '100%',
+          backgroundColor: 'white',
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          borderTopLeftRadius: 20,
+          padding: 20,
+          paddingTop: 10,
+          borderTopRightRadius: 20,
+        }}>
+        <View
+          style={{
+            height: 1,
+            width: 100,
+            backgroundColor: '#e9e9e9',
+            alignSelf: 'center',
+            marginTop: 1,
+          }}
+        />
+        <_Header />
+        <_MenuList />
+      </View>
+    </Pressable>
+  );
 };
