@@ -1,5 +1,7 @@
 import React from 'react';
 import {Realm} from '@realm/react';
+import {ACTION_TYPE, createAction, reducerFunction} from './Reducer';
+import localStore from '../utils/Store';
 
 // ?instance of Realm app
 const appId = 'kazi-application-zpzdw';
@@ -10,74 +12,70 @@ const app = new Realm.App(appConfig);
 const AuthContext = React.createContext(null);
 
 const AuthProvider = props => {
-  const [user, setUser] = React.useState(app.currentUser);
-  const [loading, setLoading] = React.useState(false);
-
-  const state = {user, loading};
-
-  // React.useEffect(() => {
-  //   if (!user) {
-  //     console.log('No user found, Please Login');
-  //     return;
-  //   }
-
-  //   const config = {
-  //     sync: {
-  //       user,
-  //       partitionValue: `user=${user.id}`,
-  //     },
-  //   };
-
-  //   Realm.open(config)
-  //     .then(userRealm => {
-  //       realmRef.current = userRealm;
-  //     })
-  //     .catch(error => console.log('Realm Error: ', error.message));
-
-  //   return () => {
-  //     const userRealm = realmRef.current;
-  //     if (userRealm) {
-  //       userRealm.close();
-  //       realmRef.current = null;
-  //     }
-  //   };
-  // }, [user]);
+  const initialState = {
+    isLoading: true,
+    isDark: false,
+    error: null,
+    user: app.currentUser,
+  };
+  // const [state, setState] = React.useState(initilState)
+  // const [user, setUser] = React.useState(app.currentUser);
+  // const [loading, setLoading] = React.useState(false);
+  const [state, dispatch] = React.useReducer(reducerFunction, initialState);
 
   //   Functions
+  const retrieveUser = async () => {
+    try {
+      const data = await localStore.retrieve();
+      if (data !== null) dispatch(createAction(ACTION_TYPE.SET_USER, data));
+      return null;
+    } catch (error) {
+      // dispatch(createAction(ACTION_TYPE.SET_ERROR, error.message));
+      console.log('Failed to Retrieve: ', error.message);
+    }
+  };
   const signIn = (email, password) => {
-    setLoading(true);
+    dispatch(createAction(ACTION_TYPE.SET_LOADING));
     const credentials = Realm.Credentials.emailPassword(email, password);
     app
       .logIn(credentials)
-      .then(newUser => setUser(newUser))
-      .catch(err => console.error('Errored: ', err))
-      .finally(() => setLoading(false));
+      .then(newUser => {
+        localStore.store(newUser);
+        dispatch(createAction(ACTION_TYPE.SET_USER, newUser));
+      })
+      .catch(err => {
+        dispatch(createAction(ACTION_TYPE.SET_ERROR, err.message));
+        console.error('Errored: ', err);
+      });
+    // .finally(() => setLoading(false));
   };
   const signUp = async (email, password) => {
     try {
       await app.emailPasswordAuth.registerUser({email, password});
     } catch (error) {
+      dispatch(createAction(ACTION_TYPE.SET_ERROR, err.message));
       console.warn('Failed to signup: ', error.message);
     }
   };
 
   const signOut = async () => {
-    setLoading(true);
+    dispatch(createAction(ACTION_TYPE.SET_LOADING));
     if (user == null) {
-      console.warn("Not logged in, can't log out!");
-      setLoading(false);
+      dispatch(createAction(ACTION_TYPE.SET_ERROR, 'No user to LogOut'));
       return;
     }
     try {
       await user.logOut();
-      setUser(null);
-      setLoading(false);
+      localStore.emptyStore();
+      dispatch(createAction(ACTION_TYPE.REMOVE_USER));
     } catch (error) {
-      console.log('SignOut Error: ', error.message);
-      setLoading(false);
+      dispatch(createAction(ACTION_TYPE.SET_ERROR, err.message));
     }
   };
 
+  React.useEffect(() => {
+    retrieveUser();
+  }, []);
   return (
     <AuthContext.Provider value={{signIn, signUp, signOut, state}}>
       {props.children}
